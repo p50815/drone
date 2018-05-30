@@ -32,6 +32,7 @@ import (
 	"github.com/drone/drone/remote/gitlab"
 	"github.com/drone/drone/remote/gitlab3"
 	"github.com/drone/drone/remote/gogs"
+	"github.com/drone/drone/remote/scm"
 	"github.com/drone/drone/server/web"
 	"github.com/drone/drone/store"
 	"github.com/drone/drone/store/datastore"
@@ -87,6 +88,8 @@ func SetupRemote(c *cli.Context) (remote.Remote, error) {
 		return setupGitea(c)
 	case c.Bool("coding"):
 		return setupCoding(c)
+	case c.Bool("scm"):
+		return setupSCM(c)
 	default:
 		return nil, fmt.Errorf("version control system not configured")
 	}
@@ -197,6 +200,16 @@ func setupTree(c *cli.Context) *httptreemux.ContextMux {
 		web.WithSync(time.Hour*72),
 	).Register(tree)
 	return tree
+}
+
+// helper function to setup the SCM remote from the CLI arguments.
+func setupSCM(c *cli.Context) (remote.Remote, error) {
+	return scm.New(scm.Opts{
+		URL:        c.String("scm-server"),
+		Username:   c.String("scm-username"),
+		Password:   c.String("scm-password"),
+		SkipVerify: c.String("scm-skip-verify"),
+	})
 }
 
 func before(c *cli.Context) error { return nil }

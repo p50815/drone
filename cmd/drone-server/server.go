@@ -500,6 +500,31 @@ var flags = []cli.Flag{
 		Name:   "keepalive-min-time",
 		Usage:  "server-side enforcement policy on the minimum amount of time a client should wait before sending a keepalive ping.",
 	},
+	cli.BoolFlag{
+		EnvVar: "DRONE_SCM",
+		Name:   "scm",
+		Usage:  "scm driver is enabled",
+	},
+	cli.StringFlag{
+		EnvVar: "DRONE_SCM_URL",
+		Name:   "scm-server",
+		Usage:  "scm server address",
+	},
+	cli.StringFlag{
+		EnvVar: "DRONE_SCM_USERNAME",
+		Name:   "scm-username",
+		Usage:  "scm service account username",
+	},
+	cli.StringFlag{
+		EnvVar: "DRONE_SCM_PASSWORD",
+		Name:   "scm-password",
+		Usage:  "scm service account password",
+	},
+	cli.BoolFlag{
+		EnvVar: "DRONE_SCM_SKIP_VERIFY",
+		Name:   "scm-skip-verify",
+		Usage:  "scm skip ssl verification",
+	},
 }
 
 func server(c *cli.Context) error {
